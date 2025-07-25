@@ -11,7 +11,7 @@ export const createUser=async(email,password,name,age)=>{
         const user=new User({
             email:email.trim().toLowerCase(),
             password:hashed,
-            name: name.toLowerCase() || email.split("@")[0].toLowerCase(),
+            name: name.trim().toLowerCase() || email.split("@")[0].toLowerCase(),
             age: age || 0
         });
         const result=await user.save();
