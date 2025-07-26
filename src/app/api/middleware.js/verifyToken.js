@@ -1,17 +1,27 @@
 import { verifyAccessToken } from "../lib/auth";
+import { connectDB } from "../lib/db";
+import User from "../model/user.model";
 
 
+export async function authenticate(request) {
+  await connectDB();
 
+  const authHeader = request.headers.get('authorization');
+  
 
-export const authenticate = (handler) => (req, res) => {
-  const authHeader = req.headers.authorization;
-  if (!authHeader) return res.status(401).json({ message: 'No token provided' });
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return null;
+  }
 
   const token = authHeader.split(' ')[1];
-  const user = verifyAccessToken(token);
+  const decoded = verifyAccessToken(token);
 
-  if (!user) return res.status(403).json({ message: 'Invalid or expired token' });
+  if (!decoded || !decoded.id) {
+    return null;
+  }
 
-  req.user = user;
-  return handler(req, res);
-};
+  // Optionally fetch full user object (recommended)
+  const user = await User.findById(decoded.id).select('-password');
+
+  return user || null;
+}

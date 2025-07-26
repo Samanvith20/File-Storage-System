@@ -4,6 +4,8 @@ import { useState } from "react"
 import { Eye, EyeOff, Mail, Lock, User, ArrowRight } from "lucide-react"
 import Link from "next/link"
 import toast, { Toaster } from "react-hot-toast"
+import { useRouter } from 'next/navigation';
+
 
 export default function AuthForm({type}) {
   const [showPassword, setShowPassword] = useState(false)
@@ -15,7 +17,7 @@ export default function AuthForm({type}) {
     confirmPassword: "",
   })
   const [focusedField, setFocusedField] = useState(null)
-
+const router=useRouter()
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
   }
@@ -54,6 +56,7 @@ export default function AuthForm({type}) {
             password: "",
             confirmPassword: "",
           })
+          router.push("/signin")
         }
     } catch (error) {
         console.error("Registration error:", error)
@@ -78,6 +81,11 @@ export default function AuthForm({type}) {
           }),
         })
         const data = await response.json()
+        console.log("Login Response:", data)
+        // set the accesstoken in the localStorage
+        if (data.accessToken) {
+          localStorage.setItem('accessToken', data.accessToken);
+        }
         if (!response.ok) {
           toast.error(data.message || "Something went wrong",{
             id: toastloading
@@ -90,7 +98,7 @@ export default function AuthForm({type}) {
             email: "",
             password: "",
           })
-          
+           router.push("/")
         }
     } catch (error) {
         console.error("Login error:", error)
@@ -224,7 +232,7 @@ export default function AuthForm({type}) {
 }
         { type==="signin" &&
          <div className="text-center mt-4 text-slate-400 text-sm">
-          Don't have an account? Sign up{" "}
+          Don't have an account?{" "}
           <Link href="/signup" className="text-purple-300 hover:text-purple-200 font-semibold transition-colors">
             Sign up
           </Link>

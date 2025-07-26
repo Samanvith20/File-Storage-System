@@ -4,7 +4,7 @@ import * as cookie from 'cookie';
 import { generateAccessToken, verifyRefreshToken } from '../../lib/auth';
 
 
-export  function GET(req,) {
+export  function POST(req,) {
   try {
  const cookieHeader = req.headers.get('cookie') || '';
     const { refreshToken } = cookie.parse(cookieHeader);
