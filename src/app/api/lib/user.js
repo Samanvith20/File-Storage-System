@@ -40,16 +40,7 @@ export const findUserByEmail=async(email)=>{
    }
 }
 
-export const findUserById=async(id)=>{
-    try {
-        await connectDB()
-        const user=await User.findById(id);
-        return user;
-    } catch (error) {
-        console.error("Error finding user by ID:", error);
-        throw new Error("User not found");
-    }
-}
+
 
 
 export const validatePassword=async(password,hashedPassword)=>{
