@@ -41,7 +41,7 @@ export async function DELETE(req, { params }) {
 
     await s3
       .deleteObject({
-        Bucket: process.env.AWS_BUCKET_NAME,
+        Bucket: process.env.MY_BUCKET_NAME,
         Key: file.s3Key,
       })
       .promise();

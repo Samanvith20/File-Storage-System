@@ -37,7 +37,7 @@ export async function POST(req) {
 
       const uploadResult = await s3
         .upload({
-          Bucket: process.env.AWS_BUCKET_NAME,
+          Bucket: process.env.MY_BUCKET_NAME,
           Key: key,
           Body: buffer,
           ContentType: file.type,
